@@ -30,6 +30,10 @@ Then, it erases the number part to replace it by the result of the required
 calculation (first argument, in the form of a binary function accepting
 the current number and the `v:count`.
 
+It accepts numbers in different bases: 10, 2 if beginning by `0b` or `0B`, 8
+if beginning by `0` and 16 if beginning by `0x` or `0X`. If `0X` is used, it
+will use uppercase digits instead of lowercase ones.
+
 ==============================================================================
 Usage                                                            *vimul-usage*
 
