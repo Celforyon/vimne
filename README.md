@@ -22,3 +22,5 @@ In vim `:VundleUpdate`
 Simply redo manual installation steps
 
 # Usage
+
+see `:h vimul`

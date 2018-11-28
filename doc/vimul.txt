@@ -1,0 +1,58 @@
+vimul.txt   Utility to multiply numbers
+
+Author: Alexis Pereda
+License: GPLv3
+
+CONTENTS                                                               *vimul*
+
+1. Introduction  |vimul-introduction|
+2. How it works  |vimul-howitworks|
+3. Usage         |vimul-usage|
+4. Requirements  |vimul-requirements|
+5. Variables     |vimul-variables|
+7. License       |vimul-license|
+
+==============================================================================
+Introduction                                              *vimul-introduction*
+
+This plugin mainly provides the `:Multiply` command.
+
+This completes the default utilities in vim which are adding and sutracting.
+
+==============================================================================
+How it works                                                *vimul-howitworks*
+
+It find the first occurrence of a valid number on the current line.
+The number is searched in the right side of the cursor position, but if the
+cursor already is in the number, it first goes back left.
+
+Then, it erases the number part to replace it by the result of the required
+calculation.
+
+==============================================================================
+Usage                                                            *vimul-usage*
+
+Available commands: >
+  :Multiply
+<
+
+MULTIPLY COMMAND                                                    *Multiply*
+
+This command accepts a `count` argument, by default it uses the number 2.
+It multiplies the number by the argument and writes it instead of the current
+number.
+
+==============================================================================
+Requirements                                              *vimul-requirements*
+
+Currently, none.
+
+==============================================================================
+Variables                                                    *vimul-variables*
+
+Currently, none.
+
+==============================================================================
+License                                                        *vimul-license*
+
+This software is licensed under the GPL v3 license
