@@ -28,7 +28,7 @@ position, but if the cursor already is in the number, it first goes back left.
 
 Then, it erases the number part to replace it by the result of the required
 calculation (first argument, in the form of a binary function accepting
-the current number and the `v:count` (defaulted to 2 when 0))
+the current number and the `v:count`.
 
 ==============================================================================
 Usage                                                            *vimul-usage*
@@ -48,15 +48,16 @@ If you want to create mappings for a command, you must use `<C-u>` like that:
 MULTIPLY COMMAND                                                    *Multiply*
 
 Calls |vimul#apply| with `vimul#multiply` function.
+If the multiplier is 0, 2 is used instead.
 
 DIVIDE COMMAND                                                        *Divide*
 
 Calls |vimul#apply| with `vimul#divide` function.
+If the divider is 0, 2 is used instead.
 
 VIMULAPPLY FUNCTION                                               *VimulApply*
 
 Replaces the number with the result of `function(currentNumber, modifier)`.
-`modifier` is replaced by 2 if it was 0.
 
 ==============================================================================
 Requirements                                              *vimul-requirements*

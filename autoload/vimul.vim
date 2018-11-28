@@ -76,31 +76,28 @@ function! vimul#insert(text, append)
 	execute 'normal '.l:method.a:text
 endfunction
 
-function! vimul#apply(f, n)
+function! vimul#apply(function, modifier)
 	let l:pos = vimul#gotonum()
 	if l:pos == [0, 0]
 		return
 	endif
 
-	let l:n = a:n
-	if l:n == 0
-		let l:n = 2
-	endif
-
 	let l:size      = l:pos[1] - l:pos[0] + 1
 	let l:value     = vimul#value(vimul#getnumstr())
-	let l:newvalue  = call(a:f, [l:value, l:n])
+	let l:newvalue  = call(a:function, [l:value, a:modifier])
 	let l:append    = vimul#erase(l:size)
 	call vimul#insert(l:newvalue, l:append)
 endfunction
 
 """" math functions
 function! vimul#multiply(v, n)
-	return a:v * a:n
+	let l:n = a:n? a:n:2
+	return a:v * l:n
 endfunction
 
 function! vimul#divide(v, n)
-	return a:v / a:n
+	let l:n = a:n? a:n:2
+	return a:v / l:n
 endfunction
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""
