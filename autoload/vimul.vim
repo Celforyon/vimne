@@ -131,6 +131,9 @@ function! vimul#insert(text, append)
 	execute 'normal '.l:method.a:text
 endfunction
 
+"""""""""""""""""""""""""""""""""""""""
+"""" Entrypoint """""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""
 function! vimul#apply(function, modifier)
 	let l:bnum = vimul#gotonum()
 	if l:bnum == 0
@@ -151,7 +154,9 @@ function! vimul#apply(function, modifier)
 	call vimul#insert(l:newstr, l:append)
 endfunction
 
-"""" math functions
+"""""""""""""""""""""""""""""""""""""""
+"""" Math functions """""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""
 function! vimul#multiply(v, n)
 	let l:n = a:n? a:n:2
 	return a:v * l:n
@@ -160,6 +165,16 @@ endfunction
 function! vimul#divide(v, n)
 	let l:n = a:n? a:n:2
 	return a:v / l:n
+endfunction
+
+function! vimul#power2(v, n)
+	let l:n = a:n? a:n:1
+	let l:res = a:v
+	while l:n
+		let l:res = l:res * 2
+		let l:n = l:n - 1
+	endwhile
+	return l:res
 endfunction
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""

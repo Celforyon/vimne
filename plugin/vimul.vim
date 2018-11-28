@@ -22,8 +22,9 @@ endfunction
 """""""""""""""""""""""""""""""""""""""""""""""""""""""
 """""""""""""""" Commands """""""""""""""""""""""""""""
 
-command! Multiply :call vimul#apply(function('vimul#multiply'),  v:count)
-command! Divide   :call vimul#apply(function('vimul#divide'),    v:count)
+command! Multiply       :call vimul#apply(function('vimul#multiply'),  v:count)
+command! Divide         :call vimul#apply(function('vimul#divide'),    v:count)
+command! MultByPowerOf2 :call vimul#apply(function('vimul#power2'),    v:count)
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""
 """""""""""""""" Autocmd """"""""""""""""""""""""""""""
