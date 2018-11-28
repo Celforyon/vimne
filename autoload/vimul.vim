@@ -28,14 +28,14 @@ function! vimul#gotonum()
 		endwhile
 
 		call setpos('.', [l:pos[0], l:lnum, l:cnum, l:pos[3]])
-		return [l:cnum, l:enum]
+		return [l:cnum-1, l:enum-1]
 	endif
 
-	return [0, 0]
+	return [-1, -1]
 endfunction
 
-function! vimul#getnumstr()
-	let l:str = expand("<cword>")
+function! vimul#getnumstr(range)
+	let l:str = getline('.')[a:range[0]:a:range[1]]
 	return l:str
 endfunction
 
@@ -78,14 +78,15 @@ endfunction
 
 function! vimul#apply(function, modifier)
 	let l:pos = vimul#gotonum()
-	if l:pos == [0, 0]
+	if l:pos == [-1, -1]
 		return
 	endif
 
 	let l:size      = l:pos[1] - l:pos[0] + 1
-	let l:value     = vimul#value(vimul#getnumstr())
+	let l:value     = vimul#value(vimul#getnumstr(l:pos))
 	let l:newvalue  = call(a:function, [l:value, a:modifier])
 	let l:append    = vimul#erase(l:size)
+
 	call vimul#insert(l:newvalue, l:append)
 endfunction
 
