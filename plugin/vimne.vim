@@ -1,11 +1,11 @@
-" vimul.vim
+" vimne.vim
 " Maintainer: Alexis Pereda
 " Version: 1
 
-if exists('g:loaded_vimul')
+if exists('g:loaded_vimne')
 	finish
 endif
-let g:loaded_vimul = 1
+let g:loaded_vimne = 1
 
 """""""""""""""" Variables """"""""""""""""""""""""""""
 
@@ -16,17 +16,17 @@ let g:loaded_vimul = 1
 """""""""""""""" Functions """"""""""""""""""""""""""""
 
 function! VimulApply(function, modifier)
-	return vimul#apply(a:function, a:modifier)
+	return vimne#apply(a:function, a:modifier)
 endfunction
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""
 """""""""""""""" Commands """""""""""""""""""""""""""""
 
-command! Multiply       :call vimul#apply(function('vimul#multiply'),       v:count)
-command! Divide         :call vimul#apply(function('vimul#divide'),         v:count)
-command! MultByPowerOf2 :call vimul#apply(function('vimul#multbypowerof2'), v:count)
+command! Multiply       :call vimne#apply(function('vimne#multiply'),       v:count)
+command! Divide         :call vimne#apply(function('vimne#divide'),         v:count)
+command! MultByPowerOf2 :call vimne#apply(function('vimne#multbypowerof2'), v:count)
 
-command! NextFibonacci  :call vimul#apply(function('vimul#nextfibonacci'),  v:count)
+command! NextFibonacci  :call vimne#apply(function('vimne#nextfibonacci'),  v:count)
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""
 """""""""""""""" Autocmd """"""""""""""""""""""""""""""
