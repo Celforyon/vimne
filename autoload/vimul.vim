@@ -78,7 +78,7 @@ function! vimul#base(str)
 			let l:base = 16
 		elseif l:b ==? 'b'
 			let l:base = 2
-		else
+		elseif l:b =~ '[0-7]'
 			let l:base = 8
 		endif
 	endif
@@ -107,6 +107,10 @@ function! vimul#nr2str(value, base, basechar)
 		let l:str   = l:digits[l:digit].l:str
 		let l:value = (l:value - l:digit) / a:base
 	endwhile
+
+	if empty(l:str)
+		let l:str = '0'
+	endif
 
 	return l:prefix.l:str
 endfunction
@@ -168,13 +172,39 @@ function! vimul#divide(v, n)
 endfunction
 
 function! vimul#power2(v, n)
-	let l:n = a:n? a:n:1
+	let l:n   = a:n? a:n:1
 	let l:res = a:v
 	while l:n
 		let l:res = l:res * 2
-		let l:n = l:n - 1
+		let l:n   = l:n - 1
 	endwhile
 	return l:res
+endfunction
+
+function! vimul#nextfibo(p0, p1)
+	return [a:p1, a:p0+a:p1]
+endfunction
+
+function! vimul#fibo(v, n)
+	let l:n   = a:n? a:n:1
+	let l:p0  = 1
+	let l:p1  = 1
+
+	while l:p1 < a:v
+		let [l:p0, l:p1] = vimul#nextfibo(l:p0, l:p1)
+	endwhile
+
+	if l:p1 != a:v
+		" not a fibonacci number
+		return a:v
+	endif
+
+	while l:n
+		let [l:p0, l:p1]  = vimul#nextfibo(l:p0, l:p1)
+		let l:n           = l:n - 1
+	endwhile
+
+	return l:p1
 endfunction
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""
