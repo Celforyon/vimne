@@ -22,11 +22,11 @@ endfunction
 """""""""""""""""""""""""""""""""""""""""""""""""""""""
 """""""""""""""" Commands """""""""""""""""""""""""""""
 
-command! Multiply       :call vimul#apply(function('vimul#multiply'), v:count)
-command! Divide         :call vimul#apply(function('vimul#divide'),   v:count)
-command! MultByPowerOf2 :call vimul#apply(function('vimul#power2'),   v:count)
+command! Multiply       :call vimul#apply(function('vimul#multiply'),       v:count)
+command! Divide         :call vimul#apply(function('vimul#divide'),         v:count)
+command! MultByPowerOf2 :call vimul#apply(function('vimul#multbypowerof2'), v:count)
 
-command! NextFibonacci  :call vimul#apply(function('vimul#fibo'),     v:count)
+command! NextFibonacci  :call vimul#apply(function('vimul#nextfibonacci'),  v:count)
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""
 """""""""""""""" Autocmd """"""""""""""""""""""""""""""

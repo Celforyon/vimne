@@ -171,7 +171,7 @@ function! vimul#divide(v, n)
 	return a:v / l:n
 endfunction
 
-function! vimul#power2(v, n)
+function! vimul#multbypowerof2(v, n)
 	let l:n   = a:n? a:n:1
 	let l:res = a:v
 	while l:n
@@ -181,17 +181,17 @@ function! vimul#power2(v, n)
 	return l:res
 endfunction
 
-function! vimul#nextfibo(p0, p1)
+function! vimul#fibo(p0, p1)
 	return [a:p1, a:p0+a:p1]
 endfunction
 
-function! vimul#fibo(v, n)
+function! vimul#nextfibonacci(v, n)
 	let l:n   = a:n? a:n:1
 	let l:p0  = 1
 	let l:p1  = 1
 
 	while l:p1 < a:v
-		let [l:p0, l:p1] = vimul#nextfibo(l:p0, l:p1)
+		let [l:p0, l:p1] = vimul#fibo(l:p0, l:p1)
 	endwhile
 
 	if l:p1 != a:v
@@ -200,7 +200,7 @@ function! vimul#fibo(v, n)
 	endif
 
 	while l:n
-		let [l:p0, l:p1]  = vimul#nextfibo(l:p0, l:p1)
+		let [l:p0, l:p1]  = vimul#fibo(l:p0, l:p1)
 		let l:n           = l:n - 1
 	endwhile
 

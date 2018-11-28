@@ -40,6 +40,8 @@ Usage                                                            *vimul-usage*
 Available commands: >
   :Multiply
   :Divide
+  :MultByPowerOf2
+  :NextFibonacci
 <
 
 Available functions: >
@@ -58,6 +60,16 @@ DIVIDE COMMAND                                                        *Divide*
 
 Calls |vimul#apply| with `vimul#divide` function.
 If the divider is 0, 2 is used instead.
+
+MULTBYPOWEROF2 COMMAND                                        *MultByPowerOf2*
+
+Calls |vimul#apply| with `vimul#multbypowerof2` function.
+If `v:count` is 0, 1 is used instead.
+
+NEXTFIBONACCI COMMAND                                          *NextFibonacci*
+
+Calls |vimul#apply| with `vimul#nextfibonacci` function.
+If `v:count` is 0, 1 is used instead.
 
 VIMULAPPLY FUNCTION                                               *VimulApply*
 
