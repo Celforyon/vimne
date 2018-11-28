@@ -15,10 +15,15 @@ let g:loaded_vimul = 1
 """""""""""""""""""""""""""""""""""""""""""""""""""""""
 """""""""""""""" Functions """"""""""""""""""""""""""""
 
+function! VimulApply(function, modifier)
+	return vimul#apply(a:function, a:modifier)
+endfunction
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""
 """""""""""""""" Commands """""""""""""""""""""""""""""
 
-command! Multiply call vimul#multiply(v:count)
+command! Multiply :call vimul#apply(function('vimul#multiply'),  v:count)
+command! Divide   :call vimul#apply(function('vimul#divide'),    v:count)
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""
 """""""""""""""" Autocmd """"""""""""""""""""""""""""""

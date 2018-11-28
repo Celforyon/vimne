@@ -1,4 +1,4 @@
-vimul.txt   Utility to multiply numbers
+vimul.txt   Utility to edit numbers (multiply/divide)
 
 Author: Alexis Pereda
 License: GPLv3
@@ -15,32 +15,48 @@ CONTENTS                                                               *vimul*
 ==============================================================================
 Introduction                                              *vimul-introduction*
 
-This plugin mainly provides the `:Multiply` command.
+This plugin mainly provides the `:Multiply` and `:Divide` commands.
 
 This completes the default utilities in vim which are adding and sutracting.
 
 ==============================================================================
 How it works                                                *vimul-howitworks*
 
-It find the first occurrence of a valid number on the current line.
-The number is searched in the right side of the cursor position, but if the
-cursor already is in the number, it first goes back left.
+The function |VimulApply| finds the first occurrence of a valid number on
+the current line. The number is searched in the right side of the cursor
+position, but if the cursor already is in the number, it first goes back left.
 
 Then, it erases the number part to replace it by the result of the required
-calculation.
+calculation (first argument, in the form of a binary function accepting
+the current number and the `v:count` (defaulted to 2 when 0))
 
 ==============================================================================
 Usage                                                            *vimul-usage*
 
 Available commands: >
   :Multiply
+  :Divide
 <
+
+Available functions: >
+  VimulApply(function, modifier)
+<
+
+If you want to create mappings for a command, you must use `<C-u>` like that:
+`map <leader>m :<C-u>Multiply`
 
 MULTIPLY COMMAND                                                    *Multiply*
 
-This command accepts a `count` argument, by default it uses the number 2.
-It multiplies the number by the argument and writes it instead of the current
-number.
+Calls |vimul#apply| with `vimul#multiply` function.
+
+DIVIDE COMMAND                                                        *Divide*
+
+Calls |vimul#apply| with `vimul#divide` function.
+
+VIMULAPPLY FUNCTION                                               *VimulApply*
+
+Replaces the number with the result of `function(currentNumber, modifier)`.
+`modifier` is replaced by 2 if it was 0.
 
 ==============================================================================
 Requirements                                              *vimul-requirements*
