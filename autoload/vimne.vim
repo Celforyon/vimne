@@ -181,6 +181,16 @@ function! vimne#multbypowerof2(v, n)
 	return l:res
 endfunction
 
+function! vimne#divbypowerof2(v, n)
+	let l:n   = a:n? a:n:1
+	let l:res = a:v
+	while l:n
+		let l:res = l:res / 2
+		let l:n   = l:n - 1
+	endwhile
+	return l:res
+endfunction
+
 function! vimne#fibo(p0, p1)
 	return [a:p1, a:p0+a:p1]
 endfunction

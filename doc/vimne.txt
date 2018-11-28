@@ -41,6 +41,7 @@ Available commands: >
   :Multiply
   :Divide
   :MultByPowerOf2
+  :DivByPowerOf2
   :NextFibonacci
 <
 
@@ -64,6 +65,11 @@ If the divider is 0, 2 is used instead.
 MULTBYPOWEROF2 COMMAND                                        *MultByPowerOf2*
 
 Calls |vimne#apply| with `vimne#multbypowerof2` function.
+If `v:count` is 0, 1 is used instead.
+
+DIVBYPOWEROF2 COMMAND                                          *DivByPowerOf2*
+
+Calls |vimne#apply| with `vimne#divbypowerof2` function.
 If `v:count` is 0, 1 is used instead.
 
 NEXTFIBONACCI COMMAND                                          *NextFibonacci*

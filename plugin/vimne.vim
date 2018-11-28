@@ -24,7 +24,9 @@ endfunction
 
 command! Multiply       :call vimne#apply(function('vimne#multiply'),       v:count)
 command! Divide         :call vimne#apply(function('vimne#divide'),         v:count)
+
 command! MultByPowerOf2 :call vimne#apply(function('vimne#multbypowerof2'), v:count)
+command! DivByPowerOf2  :call vimne#apply(function('vimne#divbypowerof2'),  v:count)
 
 command! NextFibonacci  :call vimne#apply(function('vimne#nextfibonacci'),  v:count)
 
