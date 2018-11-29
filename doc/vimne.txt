@@ -22,7 +22,7 @@ This completes the default utilities in vim which are adding and sutracting.
 ==============================================================================
 How it works                                                *vimne-howitworks*
 
-The function |VimulApply| finds the first occurrence of a valid number on
+The function |VimneApply| finds the first occurrence of a valid number on
 the current line. The number is searched in the right side of the cursor
 position, but if the cursor already is in the number, it first goes back left.
 
@@ -46,7 +46,7 @@ Available commands: >
 <
 
 Available functions: >
-  VimulApply(function, modifier)
+  NumEdit(function, modifier)
 <
 
 If you want to create mappings for a command, you must use `<C-u>` like that:
@@ -54,31 +54,37 @@ If you want to create mappings for a command, you must use `<C-u>` like that:
 
 MULTIPLY COMMAND                                                    *Multiply*
 
-Calls |vimne#apply| with `vimne#multiply` function.
+Calls |NumEdit| with `vimne#multiply` function.
 If the multiplier is 0, 2 is used instead.
 
 DIVIDE COMMAND                                                        *Divide*
 
-Calls |vimne#apply| with `vimne#divide` function.
+Calls |NumEdit| with `vimne#divide` function.
 If the divider is 0, 2 is used instead.
 
 MULTBYPOWEROF2 COMMAND                                        *MultByPowerOf2*
 
-Calls |vimne#apply| with `vimne#multbypowerof2` function.
+Calls |NumEdit| with `vimne#multbypowerof2` function.
 If `v:count` is 0, 1 is used instead.
 
 DIVBYPOWEROF2 COMMAND                                          *DivByPowerOf2*
 
-Calls |vimne#apply| with `vimne#divbypowerof2` function.
+Calls |NumEdit| with `vimne#divbypowerof2` function.
 If `v:count` is 0, 1 is used instead.
 
 NEXTFIBONACCI COMMAND                                          *NextFibonacci*
 
-Calls |vimne#apply| with `vimne#nextfibonacci` function.
+Calls |NumEdit| with `vimne#nextfibonacci` function.
 If `v:count` is 0, 1 is used instead.
 
-VIMULAPPLY FUNCTION                                               *VimulApply*
+PREVFIBONACCI COMMAND                                          *PrevFibonacci*
 
+Calls |NumEdit| with `vimne#prevfibonacci` function.
+If `v:count` is 0, 1 is used instead.
+
+NUMEDIT FUNCTION                                                     *NumEdit*
+
+First argument is a string containing the name of the function to call.
 Replaces the number with the result of `function(currentNumber, modifier)`.
 
 ==============================================================================

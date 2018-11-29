@@ -246,4 +246,24 @@ function! vimne#nextfibonacci(v, n)
 	return l:p1
 endfunction
 
+function! vimne#prevfibonacci(v, n)
+	let l:n = a:n? a:n:1
+	let l:p = [1, 1]
+
+	while l:p[-1] < a:v
+		let [l:ignore, l:next]  = vimne#fibo(l:p[-2], l:p[-1])
+		let l:p                 = l:p+[l:next]
+	endwhile
+
+	if l:p[-1] != a:v
+		" not a fibonacci number
+		return a:v
+	endif
+
+	if l:n >= len(l:p)
+		return 1
+	endif
+	return l:p[-l:n-1]
+endfunction
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""

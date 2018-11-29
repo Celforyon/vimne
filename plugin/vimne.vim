@@ -15,20 +15,21 @@ let g:loaded_vimne = 1
 """""""""""""""""""""""""""""""""""""""""""""""""""""""
 """""""""""""""" Functions """"""""""""""""""""""""""""
 
-function! VimulApply(function, modifier)
-	return vimne#apply(a:function, a:modifier)
+function! NumEdit(function, modifier)
+	return vimne#apply(function(a:function), a:modifier)
 endfunction
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""
 """""""""""""""" Commands """""""""""""""""""""""""""""
 
-command! Multiply       :call vimne#apply(function('vimne#multiply'),       v:count)
-command! Divide         :call vimne#apply(function('vimne#divide'),         v:count)
+command! Multiply       :call NumEdit('vimne#multiply',       v:count)
+command! Divide         :call NumEdit('vimne#divide',         v:count)
 
-command! MultByPowerOf2 :call vimne#apply(function('vimne#multbypowerof2'), v:count)
-command! DivByPowerOf2  :call vimne#apply(function('vimne#divbypowerof2'),  v:count)
+command! MultByPowerOf2 :call NumEdit('vimne#multbypowerof2', v:count)
+command! DivByPowerOf2  :call NumEdit('vimne#divbypowerof2',  v:count)
 
-command! NextFibonacci  :call vimne#apply(function('vimne#nextfibonacci'),  v:count)
+command! PrevFibonacci  :call NumEdit('vimne#prevfibonacci',  v:count)
+command! NextFibonacci  :call NumEdit('vimne#nextfibonacci',  v:count)
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""
 """""""""""""""" Autocmd """"""""""""""""""""""""""""""
