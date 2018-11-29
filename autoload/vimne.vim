@@ -9,7 +9,30 @@ let s:upper_digits  = '0123456789ABCDEF'
 """""""""""""""" Functions """"""""""""""""""""""""""""
 
 """""""""""""""""""""""""""""""""""""""
-"""" Utility """"""""""""""""""""""""""
+"""" Text edition utilities """""""""""
+"""""""""""""""""""""""""""""""""""""""
+function! vimne#erase(n)
+	let l:col = col('.')
+	let l:i   = 0
+	while l:i != a:n
+		execute 'normal x'
+		let l:i = l:i + 1
+	endwhile
+
+	return l:col != col('.')
+endfunction
+
+function! vimne#insert(text, append)
+	if a:append
+		let l:method = 'a'
+	else
+		let l:method = 'i'
+	endif
+	execute 'normal '.l:method.a:text
+endfunction
+
+"""""""""""""""""""""""""""""""""""""""
+"""" Cursor utilities """""""""""""""""
 """""""""""""""""""""""""""""""""""""""
 function! vimne#setcursor(col)
 	let l:pos     = getpos('.')
@@ -18,6 +41,48 @@ function! vimne#setcursor(col)
 	call setpos('.', l:pos)
 endfunction
 
+function! vimne#getnumstr(range)
+	let l:str = getline('.')[a:range[0]-1:a:range[1]-1]
+	return l:str
+endfunction
+
+"""""""""""""""""""""""""""""""""""""""
+"""" Basic number utilities """""""""""
+"""""""""""""""""""""""""""""""""""""""
+function! vimne#sign(str)
+	let l:sign = ''
+	if a:str[0] =~ '[+-]'
+		let l:sign = a:str[0]
+	endif
+
+	return l:sign
+endfunction
+
+function! vimne#base(str)
+	let l:base    = 10
+	let l:offset  = 0
+
+	if vimne#sign(a:str) != ''
+		let l:offset = 1
+	endif
+
+	if a:str[0+l:offset] == '0'
+		let l:b = a:str[1+l:offset]
+		if l:b ==? 'x'
+			let l:base = 16
+		elseif l:b ==? 'b'
+			let l:base = 2
+		elseif l:b =~ '[0-7]'
+			let l:base = 8
+		endif
+	endif
+
+	return l:base
+endfunction
+
+"""""""""""""""""""""""""""""""""""""""
+"""" Number utilities """""""""""""""""
+"""""""""""""""""""""""""""""""""""""""
 function! vimne#gotonum()
 	let l:pos   = getpos('.')
 	let l:lnum  = l:pos[1]
@@ -69,42 +134,6 @@ function! vimne#numpos(bnum)
 	return [a:bnum, l:enum]
 endfunction
 
-function! vimne#getnumstr(range)
-	let l:str = getline('.')[a:range[0]-1:a:range[1]-1]
-	return l:str
-endfunction
-
-function! vimne#sign(str)
-	let l:sign = ''
-	if a:str[0] =~ '[+-]'
-		let l:sign = a:str[0]
-	endif
-
-	return l:sign
-endfunction
-
-function! vimne#base(str)
-	let l:base    = 10
-	let l:offset  = 0
-
-	if vimne#sign(a:str) != ''
-		let l:offset = 1
-	endif
-
-	if a:str[0+l:offset] == '0'
-		let l:b = a:str[1+l:offset]
-		if l:b ==? 'x'
-			let l:base = 16
-		elseif l:b ==? 'b'
-			let l:base = 2
-		elseif l:b =~ '[0-7]'
-			let l:base = 8
-		endif
-	endif
-
-	return l:base
-endfunction
-
 function! vimne#nr2str(value, base, ...)
 	let l:signchar  = (a:0 >= 1? a:1:0)? '+':''
 	let l:basechar  = a:0 >= 2? a:2:(a:base==2?'b':(a:base==16?'x':''))
@@ -139,26 +168,6 @@ function! vimne#nr2str(value, base, ...)
 	endif
 
 	return l:signchar.l:prefix.l:str
-endfunction
-
-function! vimne#erase(n)
-	let l:col = col('.')
-	let l:i   = 0
-	while l:i != a:n
-		execute 'normal x'
-		let l:i = l:i + 1
-	endwhile
-
-	return l:col != col('.')
-endfunction
-
-function! vimne#insert(text, append)
-	if a:append
-		let l:method = 'a'
-	else
-		let l:method = 'i'
-	endif
-	execute 'normal '.l:method.a:text
 endfunction
 
 """""""""""""""""""""""""""""""""""""""
