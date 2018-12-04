@@ -1,16 +1,17 @@
-"""""""""""""""" Variables """"""""""""""""""""""""""""
+"{{{"""""""""""" Variables """"""""""""""""""""""""""""
 
 let s:num_regex     = '[0-9A-Fa-fx+-]'
 let s:notnum_regex  = '[^0-9+-]'
 let s:digits        = '0123456789abcdef'
 let s:upper_digits  = '0123456789ABCDEF'
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"""""""""""""""" Functions """"""""""""""""""""""""""""
+"}}}"""""""""""""""""""""""""""""""""""""""""""""""""""
+"{{{"""""""""""" Functions """"""""""""""""""""""""""""
 
 """""""""""""""""""""""""""""""""""""""
-"""" Text edition utilities """""""""""
+"{{{ Text edition utilities """""""""""
 """""""""""""""""""""""""""""""""""""""
+"{{{
 function! vimne#erase(n)
 	let l:col = col('.')
 	let l:i   = 0
@@ -21,7 +22,8 @@ function! vimne#erase(n)
 
 	return l:col != col('.')
 endfunction
-
+"}}}
+"{{{
 function! vimne#insert(text, append)
 	if a:append
 		let l:method = 'a'
@@ -30,25 +32,31 @@ function! vimne#insert(text, append)
 	endif
 	execute 'normal '.l:method.a:text
 endfunction
+"}}}
+"}}}
 
 """""""""""""""""""""""""""""""""""""""
-"""" Cursor utilities """""""""""""""""
+"{{{ Cursor utilities """""""""""""""""
 """""""""""""""""""""""""""""""""""""""
+"{{{
 function! vimne#setcursor(col)
 	let l:pos     = getpos('.')
 	let l:pos[2]  = a:col
 
 	call setpos('.', l:pos)
 endfunction
-
+"}}}
+"{{{
 function! vimne#getnumstr(range)
-	let l:str = getline('.')[a:range[0]-1:a:range[1]-1]
-	return l:str
+	return getline('.')[a:range[0]-1:a:range[1]-1]
 endfunction
+"}}}
+"}}}
 
 """""""""""""""""""""""""""""""""""""""
-"""" Basic number utilities """""""""""
+"{{{ Basic number utilities """""""""""
 """""""""""""""""""""""""""""""""""""""
+"{{{
 function! vimne#sign(str)
 	let l:sign = ''
 	if a:str[0] =~ '[+-]'
@@ -57,7 +65,8 @@ function! vimne#sign(str)
 
 	return l:sign
 endfunction
-
+"}}}
+"{{{
 function! vimne#base(str)
 	let l:base    = 10
 	let l:offset  = 0
@@ -79,10 +88,30 @@ function! vimne#base(str)
 
 	return l:base
 endfunction
+"}}}
+"{{{
+function! vimne#validdigits(str)
+	let l:digit_regex = '[0-9]'
+	if a:str[0] == '0' && len(a:str) > 1
+		let basechar = a:str[1]
+		if l:basechar ==? 'x'
+			let l:digit_regex = '[0-9A-Fa-f]'
+		elseif l:basechar ==? 'b'
+			let l:digit_regex = '[01]'
+		elseif l:basechar =~ '[0-7]'
+			let l:digit_regex = '[0-7]'
+		endif
+	endif
+
+	return l:digit_regex
+endfunction
+"}}}
+"}}}
 
 """""""""""""""""""""""""""""""""""""""
-"""" Number utilities """""""""""""""""
+"{{{ Number utilities """""""""""""""""
 """""""""""""""""""""""""""""""""""""""
+"{{{
 function! vimne#gotonum()
 	let l:pos   = getpos('.')
 	let l:lnum  = l:pos[1]
@@ -90,10 +119,12 @@ function! vimne#gotonum()
 
 	let l:line  = getline(l:lnum)
 
+	" if already in the number
 	while l:cnum != 0 && l:line[l:cnum-1] =~ s:num_regex
 		let l:cnum = l:cnum - 1
 	endwhile
 
+	" go forward to find a number
 	while l:cnum < len(l:line) && l:line[l:cnum] =~ s:notnum_regex
 		let l:cnum = l:cnum + 1
 	endwhile
@@ -105,38 +136,33 @@ function! vimne#gotonum()
 	endif
 	return 0
 endfunction
-
+"}}}
+"{{{
 function! vimne#numpos(bnum)
 	let l:line = getline('.')
 	let l:enum = a:bnum
 
-	if l:line[l:enum-1] =~ '[+-]'
-		let l:enum = l:enum + 1
-	endif
+	" accept sign
+	let l:enum = l:enum + ((l:line[l:enum-1] =~ '[+-]')?1:0)
+	" find valid digits
+	let l:digit_regex = vimne#validdigits(l:line[l:enum-1:])
+	" skip format char
+	let l:enum = l:enum + ((l:line[l:enum] =~ '[xXbB]')?1:0)
 
-	let l:digit_regex = '[0-9]'
-	if l:line[l:enum-1] == '0' && l:enum < len(l:line)
-		if l:line[l:enum] ==? 'x'
-			let l:digit_regex = '[0-9A-Fa-f]'
-			let l:enum        = l:enum + 1
-		elseif l:line[l:enum] ==? 'b'
-			let l:digit_regex = '[01]'
-			let l:enum        = l:enum + 1
-		elseif l:line[l:enum] =~ '[0-7]'
-			let l:digit_regex = '[0-7]'
-		endif
-	endif
-
+	" accept valid digits
 	while l:enum < len(l:line) && l:line[l:enum] =~ l:digit_regex
 		let l:enum = l:enum + 1
 	endwhile
 
+	let l:bprefix = l:enum + 1
+
 	return [a:bnum, l:enum]
 endfunction
-
+"}}}
+"{{{
 function! vimne#nr2str(value, base, ...)
-	let l:signchar  = (a:0 >= 1? a:1:0)? '+':''
-	let l:basechar  = a:0 >= 2? a:2:(a:base==2?'b':(a:base==16?'x':''))
+	let l:signchar            = (a:0 >= 1? a:1:0)? '+':''
+	let l:basechar            = a:0 >= 2? a:2:(a:base==2?'b':(a:base==16?'x':''))
 
 	let l:prefix = ''
 	if a:base != 10
@@ -169,10 +195,13 @@ function! vimne#nr2str(value, base, ...)
 
 	return l:signchar.l:prefix.l:str
 endfunction
+"}}}
+"}}}
 
 """""""""""""""""""""""""""""""""""""""
-"""" Entrypoint """""""""""""""""""""""
+"{{{ Entrypoint """""""""""""""""""""""
 """""""""""""""""""""""""""""""""""""""
+"{{{
 function! vimne#apply(function, modifier)
 	let l:bnum = vimne#gotonum()
 	if l:bnum == 0
@@ -195,20 +224,25 @@ function! vimne#apply(function, modifier)
 
 	call vimne#insert(l:newstr, l:append)
 endfunction
+"}}}
+"}}}
 
 """""""""""""""""""""""""""""""""""""""
-"""" Math functions """""""""""""""""""
+"{{{ Math functions """""""""""""""""""
 """""""""""""""""""""""""""""""""""""""
+"{{{
 function! vimne#multiply(v, n)
 	let l:n = a:n? a:n:2
 	return a:v * l:n
 endfunction
-
+"}}}
+"{{{
 function! vimne#divide(v, n)
 	let l:n = a:n? a:n:2
 	return a:v / l:n
 endfunction
-
+"}}}
+"{{{
 function! vimne#multbypowerof2(v, n)
 	let l:n   = a:n? a:n:1
 	let l:res = a:v
@@ -218,7 +252,8 @@ function! vimne#multbypowerof2(v, n)
 	endwhile
 	return l:res
 endfunction
-
+"}}}
+"{{{
 function! vimne#divbypowerof2(v, n)
 	let l:n   = a:n? a:n:1
 	let l:res = a:v
@@ -228,11 +263,13 @@ function! vimne#divbypowerof2(v, n)
 	endwhile
 	return l:res
 endfunction
-
+"}}}
+"{{{
 function! vimne#fibo(p0, p1)
 	return [a:p1, a:p0+a:p1]
 endfunction
-
+"}}}
+"{{{
 function! vimne#nextfibonacci(v, n)
 	let l:n   = a:n? a:n:1
 	let l:p0  = 1
@@ -254,7 +291,8 @@ function! vimne#nextfibonacci(v, n)
 
 	return l:p1
 endfunction
-
+"}}}
+"{{{
 function! vimne#prevfibonacci(v, n)
 	let l:n = a:n? a:n:1
 	let l:p = [1, 1]
@@ -274,5 +312,7 @@ function! vimne#prevfibonacci(v, n)
 	endif
 	return l:p[-l:n-1]
 endfunction
+"}}}
+"}}}
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"}}}"""""""""""""""""""""""""""""""""""""""""""""""""""
