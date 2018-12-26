@@ -37,7 +37,11 @@ will use uppercase digits instead of lowercase ones.
 ==============================================================================
 Usage                                                            *vimne-usage*
 
-Available commands: >
+There are two main categories of actions that can be done:
+- changing value
+- changing base
+
+Changing value commands: >
   :Add
   :Subtract
   :Multiply
@@ -51,8 +55,20 @@ Available commands: >
   :NextFibonacci
 <
 
-Available functions: >
+Changing value functions: >
   NumEdit(function, modifier)
+<
+
+Changing base commands: >
+  :ChangeBase
+  :ToBase2
+  :ToBase8
+  :ToBase10
+  :ToBase16
+<
+
+Changing base functions: >
+  BaseEdit(modifier)
 <
 
 If you want to create mappings for a command, you must use `<C-u>` like that:
@@ -114,6 +130,32 @@ NUMEDIT FUNCTION                                                     *NumEdit*
 
 First argument is a string containing the name of the function to call.
 Replaces the number with the result of `function(currentNumber, modifier)`.
+
+CHANGEBASE COMMAND                                                *ChangeBase*
+
+Calls |BaseEdit| with the value given by `v:count`.
+
+TOBASE2 COMMAND                                                      *ToBase2*
+
+Calls |BaseEdit| with the value 2.
+
+TOBASE8 COMMAND                                                      *ToBase8*
+
+Calls |BaseEdit| with the value 8.
+
+TOBASE10 COMMAND                                                    *ToBase10*
+
+Calls |BaseEdit| with the value 10.
+
+TOBASE16 COMMAND                                                    *ToBase16*
+
+Calls |BaseEdit| with the value 16.
+
+BASEEDIT FUNCTION                                                   *BaseEdit*
+
+Changes the base of the number to the one given as argument.
+Valid arguments: 2, 8, 10, 16
+Invalid argument will cause the function to silently do nothing.
 
 ==============================================================================
 Requirements                                              *vimne-requirements*

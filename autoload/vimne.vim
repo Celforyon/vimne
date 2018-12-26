@@ -124,7 +124,7 @@ endfunction
 "}}}
 "{{{
 function! vimne#getnumstr(range)
-	return getline('.')[a:range[0]-1:a:range[2]-1]
+	return getline('.')[a:range[0]-1:a:range[1]-1]
 endfunction
 "}}}
 "{{{
@@ -132,25 +132,24 @@ function! vimne#getunitprefix(range)
 	let l:line  = getline('.')
 	let l:range = copy(a:range)
 
-
 	" possibly skip one space
-	if l:line[l:range[2]-1] =~ '[ ]'
-		let l:range[2] = l:range[2] + 1
+	if l:line[l:range[1]-1] =~ '[ ]'
+		let l:range[1] = l:range[1] + 1
 	endif
 
 	let l:sep = ''
-	if a:range[2] < l:range[2]
-		let l:sep = l:line[a:range[2]-1:l:range[2]-2]
+	if a:range[1] < l:range[1]
+		let l:sep = l:line[a:range[1]-1:l:range[1]-2]
 	endif
 
-	if l:range[2] > l:range[1]
-		if vimne#isunit(l:line[l:range[2]-1:])
+	if l:range[1] > l:range[2]
+		if vimne#isunit(l:line[l:range[1]-1:])
 			return [l:sep, ['', 10, 0]]
 		endif
 		return ['', []]
 	endif
 
-	let l:unitstr = l:line[l:range[2]-1:l:range[1]-1]
+	let l:unitstr = l:line[l:range[1]-1:l:range[2]-1]
 
 	let l:prefixes  = s:si_prefixes
 	let l:unit      = []
@@ -293,7 +292,7 @@ function! vimne#gotonum()
 endfunction
 "}}}
 "{{{
-function! vimne#numpos(bnum)
+function! vimne#rawnumpos(bnum)
 	let l:line = getline('.')
 	let l:enum = a:bnum
 
@@ -308,6 +307,14 @@ function! vimne#numpos(bnum)
 	while l:enum < len(l:line) && l:line[l:enum] =~ l:digit_regex
 		let l:enum = l:enum + 1
 	endwhile
+
+	return [a:bnum, l:enum]
+endfunction
+"}}}
+"{{{
+function! vimne#numpos(bnum)
+	let l:line = getline('.')
+	let [l:ignore, l:enum] = vimne#rawnumpos(a:bnum)
 
 	" accept si prefix
 	let l:bprefix = l:enum + 1
@@ -330,16 +337,18 @@ function! vimne#numpos(bnum)
 		endif
 	endif
 
-	return [a:bnum, l:enum, l:bprefix]
+	return [a:bnum, l:bprefix, l:enum]
 endfunction
 "}}}
 "{{{
-function! vimne#str2nr(str, base, siprefix)
-	let l:value = str2nr(a:str, a:base)
-	if a:siprefix == []
+function! vimne#str2nr(str, base, ...)
+	let l:value     = str2nr(a:str, a:base)
+	if a:0 != 1
 		return l:value
+	else
+		let l:siprefix  = a:1
+		return l:value * vimne#pow(l:siprefix[1], l:siprefix[2])
 	endif
-	return l:value * vimne#pow(a:siprefix[1], a:siprefix[2])
 endfunction
 "}}}
 "{{{
@@ -422,8 +431,9 @@ function! vimne#apply(function, modifier)
 
 	let l:pos         = vimne#numpos(l:bnum)
 
-	let l:size        = l:pos[1] - l:pos[0] + 1
-	let l:unitsize    = l:pos[1] - l:pos[2] + 1
+	let l:size        = l:pos[2] - l:pos[0] + 1
+	let l:unitsize    = l:pos[2] - l:pos[1] + 1
+
 	let l:valstr      = vimne#getnumstr(l:pos)
 	let [l:sisep, l:siprefix] = vimne#getunitprefix(l:pos)
 	let l:sign        = vimne#sign(l:valstr)
@@ -448,6 +458,31 @@ function! vimne#apply(function, modifier)
 		let l:coffset = l:coffset + len(l:newsiprefix[0])
 	endif
 	call vimne#movecursor(-l:coffset)
+endfunction
+"}}}
+"{{{
+function! vimne#changebase(newbase)
+	if a:newbase != 2 && a:newbase != 8 && a:newbase != 10 && a:newbase != 16
+		return
+	endif
+
+	let l:bnum = vimne#gotonum()
+	if l:bnum == 0
+		return
+	endif
+
+	let l:pos         = vimne#rawnumpos(l:bnum)
+	let l:size        = l:pos[1] - l:pos[0] + 1
+	let l:valstr      = vimne#getnumstr(l:pos)
+	let l:sign        = vimne#sign(l:valstr)
+	let l:base        = vimne#base(l:valstr)
+	let l:value       = vimne#str2nr(l:valstr, l:base)
+	let l:append      = vimne#erase(l:size)
+
+	let l:basechar    = a:newbase == 2? 'b':(a:newbase == 8? '0':(a:newbase == 10? '':'x'))
+	let l:newstr      = vimne#nr2str(l:value, a:newbase, !empty(l:sign), l:basechar)
+
+	call vimne#insert(l:newstr, l:append)
 endfunction
 "}}}
 "}}}

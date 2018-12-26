@@ -19,6 +19,10 @@ function! NumEdit(function, modifier)
 	return vimne#apply(function(a:function), a:modifier)
 endfunction
 
+function! BaseEdit(modifier)
+	return vimne#changebase(a:modifier)
+endfunction
+
 "}}}"""""""""""""""""""""""""""""""""""""""""""""""""""
 "{{{"""""""""""" Commands """""""""""""""""""""""""""""
 
@@ -36,6 +40,13 @@ command! DivByPowerOf2  :call NumEdit('vimne#calc#divbypowerof2',   v:count)
 
 command! PrevFibonacci  :call NumEdit('vimne#calc#prevfibonacci',   v:count)
 command! NextFibonacci  :call NumEdit('vimne#calc#nextfibonacci',   v:count)
+
+
+command! ChangeBase     :call BaseEdit(v:count)
+command! ToBase2        :call BaseEdit(2)
+command! ToBase8        :call BaseEdit(8)
+command! ToBase10       :call BaseEdit(10)
+command! ToBase16       :call BaseEdit(16)
 
 "}}}"""""""""""""""""""""""""""""""""""""""""""""""""""
 "{{{"""""""""""" Autocmd """"""""""""""""""""""""""""""
