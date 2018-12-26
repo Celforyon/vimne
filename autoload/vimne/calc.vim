@@ -2,6 +2,18 @@
 "{{{ Math functions """""""""""""""""""
 """""""""""""""""""""""""""""""""""""""
 "{{{
+function! vimne#calc#add(v, n)
+	let l:n = a:n? a:n:1
+	return a:v + l:n
+endfunction
+"}}}
+"{{{
+function! vimne#calc#subtract(v, n)
+	let l:n = a:n? a:n:1
+	return a:v - l:n
+endfunction
+"}}}
+"{{{
 function! vimne#calc#multiply(v, n)
 	let l:n = a:n? a:n:2
 	return a:v * l:n

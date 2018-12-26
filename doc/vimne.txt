@@ -1,4 +1,4 @@
-vimne.txt   Utility to edit numbers (multiply/divide)
+vimne.txt   Utility to edit numbers
 
 Author: Alexis Pereda
 License: GPLv3
@@ -38,10 +38,16 @@ will use uppercase digits instead of lowercase ones.
 Usage                                                            *vimne-usage*
 
 Available commands: >
+  :Add
+  :Subtract
   :Multiply
   :Divide
+  :Or
+  :And
+  :Xor
   :MultByPowerOf2
   :DivByPowerOf2
+  :PrevFibonacci
   :NextFibonacci
 <
 
@@ -52,34 +58,56 @@ Available functions: >
 If you want to create mappings for a command, you must use `<C-u>` like that:
 `map <leader>m :<C-u>Multiply`
 
+ADD COMMAND                                                              *Add*
+
+Calls |NumEdit| with `vimne#calc#add` function.
+If the multiplier is 0, 1 is used instead.
+
+SUBTRACT COMMAND                                                    *Subtract*
+
+Calls |NumEdit| with `vimne#calc#subtract` function.
+If the multiplier is 0, 1 is used instead.
+
 MULTIPLY COMMAND                                                    *Multiply*
 
-Calls |NumEdit| with `vimne#multiply` function.
+Calls |NumEdit| with `vimne#calc#multiply` function.
 If the multiplier is 0, 2 is used instead.
 
 DIVIDE COMMAND                                                        *Divide*
 
-Calls |NumEdit| with `vimne#divide` function.
+Calls |NumEdit| with `vimne#calc#divide` function.
 If the divider is 0, 2 is used instead.
+
+OR COMMAND                                                                *Or*
+
+Calls |NumEdit| with `or` function.
+
+AND COMMAND                                                              *And*
+
+Calls |NumEdit| with `and` function.
+
+XOR COMMAND                                                              *Xor*
+
+Calls |NumEdit| with `xor` function.
 
 MULTBYPOWEROF2 COMMAND                                        *MultByPowerOf2*
 
-Calls |NumEdit| with `vimne#multbypowerof2` function.
+Calls |NumEdit| with `vimne#calc#multbypowerof2` function.
 If `v:count` is 0, 1 is used instead.
 
 DIVBYPOWEROF2 COMMAND                                          *DivByPowerOf2*
 
-Calls |NumEdit| with `vimne#divbypowerof2` function.
-If `v:count` is 0, 1 is used instead.
-
-NEXTFIBONACCI COMMAND                                          *NextFibonacci*
-
-Calls |NumEdit| with `vimne#nextfibonacci` function.
+Calls |NumEdit| with `vimne#calc#divbypowerof2` function.
 If `v:count` is 0, 1 is used instead.
 
 PREVFIBONACCI COMMAND                                          *PrevFibonacci*
 
-Calls |NumEdit| with `vimne#prevfibonacci` function.
+Calls |NumEdit| with `vimne#calc#prevfibonacci` function.
+If `v:count` is 0, 1 is used instead.
+
+NEXTFIBONACCI COMMAND                                          *NextFibonacci*
+
+Calls |NumEdit| with `vimne#calc#nextfibonacci` function.
 If `v:count` is 0, 1 is used instead.
 
 NUMEDIT FUNCTION                                                     *NumEdit*
