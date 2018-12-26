@@ -343,12 +343,13 @@ endfunction
 "{{{
 function! vimne#str2nr(str, base, ...)
 	let l:value     = str2nr(a:str, a:base)
-	if a:0 != 1
-		return l:value
-	else
+	if a:0 == 1
 		let l:siprefix  = a:1
-		return l:value * vimne#pow(l:siprefix[1], l:siprefix[2])
+		if l:siprefix != []
+			return l:value * vimne#pow(l:siprefix[1], l:siprefix[2])
+		endif
 	endif
+	return l:value
 endfunction
 "}}}
 "{{{
