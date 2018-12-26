@@ -22,14 +22,14 @@ endfunction
 "}}}"""""""""""""""""""""""""""""""""""""""""""""""""""
 "{{{"""""""""""" Commands """""""""""""""""""""""""""""
 
-command! Multiply       :call NumEdit('vimne#multiply',       v:count)
-command! Divide         :call NumEdit('vimne#divide',         v:count)
+command! Multiply       :call NumEdit('vimne#calc#multiply',        v:count)
+command! Divide         :call NumEdit('vimne#calc#divide',          v:count)
 
-command! MultByPowerOf2 :call NumEdit('vimne#multbypowerof2', v:count)
-command! DivByPowerOf2  :call NumEdit('vimne#divbypowerof2',  v:count)
+command! MultByPowerOf2 :call NumEdit('vimne#calc#multbypowerof2',  v:count)
+command! DivByPowerOf2  :call NumEdit('vimne#calc#divbypowerof2',   v:count)
 
-command! PrevFibonacci  :call NumEdit('vimne#prevfibonacci',  v:count)
-command! NextFibonacci  :call NumEdit('vimne#nextfibonacci',  v:count)
+command! PrevFibonacci  :call NumEdit('vimne#calc#prevfibonacci',   v:count)
+command! NextFibonacci  :call NumEdit('vimne#calc#nextfibonacci',   v:count)
 
 "}}}"""""""""""""""""""""""""""""""""""""""""""""""""""
 "{{{"""""""""""" Autocmd """"""""""""""""""""""""""""""

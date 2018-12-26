@@ -315,15 +315,19 @@ function! vimne#numpos(bnum)
 
 	" skip one space
 	let l:enum    = l:enum + ((l:line[l:enum] == ' ')? 1:0)
-	" check si prefixes
-	let l:prefix  = l:enum < len(l:line)? vimne#findprefix(l:line[l:enum:]):[]
-	if l:prefix != []
-		let l:enum    = l:enum + len(l:prefix[0])
-	endif
-
-	" if it does seem to be a valid prefix
-	if !(l:enum >= len(l:line) || l:line[l:enum] == ' ' || vimne#isunit(l:line[l:enum:]))
+	if l:enum >= len(l:line)
 		let l:enum = l:enumsav
+	else
+		" check si prefixes
+		let l:prefix  = l:enum < len(l:line)? vimne#findprefix(l:line[l:enum:]):[]
+		if l:prefix != []
+			let l:enum = l:enum + len(l:prefix[0])
+		endif
+
+		" if it does seem to be a valid prefix
+		if !(l:enum >= len(l:line) || l:line[l:enum] == ' ' || vimne#isunit(l:line[l:enum:]))
+			let l:enum = l:enumsav
+		endif
 	endif
 
 	return [a:bnum, l:enum, l:bprefix]
@@ -351,12 +355,13 @@ function! vimne#reducenr(value, siprefix)
 	let l:i = 0
 	while l:siprefix == [] && l:i < len(l:siprefixes)
 		let l:cur = l:siprefixes[l:i]
-		if a:value % vimne#pow(l:cur[1], l:cur[2]) == 0
+		if (a:value % vimne#pow(l:cur[1], l:cur[2])) == 0
 			let l:siprefix = l:cur
 		endif
 		let l:i = l:i+1
 	endwhile
 
+	" return [a:value, a:siprefix]
 	return [a:value / vimne#pow(l:siprefix[1], l:siprefix[2]), l:siprefix]
 endfunction
 "}}}
@@ -434,97 +439,16 @@ function! vimne#apply(function, modifier)
 	let l:newstr      = vimne#nr2str(l:newvalue, l:base, !empty(l:sign), l:basechar, [l:sisep, l:newsiprefix])
 
 	call vimne#insert(l:newstr, l:append)
-	call vimne#movecursor(-l:unitsize)
-endfunction
-"}}}
-"}}}
 
-"""""""""""""""""""""""""""""""""""""""
-"{{{ Math functions """""""""""""""""""
-"""""""""""""""""""""""""""""""""""""""
-"{{{
-function! vimne#multiply(v, n)
-	let l:n = a:n? a:n:2
-	return a:v * l:n
-endfunction
-"}}}
-"{{{
-function! vimne#divide(v, n)
-	let l:n = a:n? a:n:2
-	return a:v / l:n
-endfunction
-"}}}
-"{{{
-function! vimne#multbypowerof2(v, n)
-	let l:n   = a:n? a:n:1
-	let l:res = a:v
-	while l:n
-		let l:res = l:res * 2
-		let l:n   = l:n - 1
-	endwhile
-	return l:res
-endfunction
-"}}}
-"{{{
-function! vimne#divbypowerof2(v, n)
-	let l:n   = a:n? a:n:1
-	let l:res = a:v
-	while l:n
-		let l:res = l:res / 2
-		let l:n   = l:n - 1
-	endwhile
-	return l:res
-endfunction
-"}}}
-"{{{
-function! vimne#fibo(p0, p1)
-	return [a:p1, a:p0+a:p1]
-endfunction
-"}}}
-"{{{
-function! vimne#nextfibonacci(v, n)
-	let l:n   = a:n? a:n:1
-	let l:p0  = 1
-	let l:p1  = 1
-
-	while l:p1 < a:v
-		let [l:p0, l:p1] = vimne#fibo(l:p0, l:p1)
-	endwhile
-
-	if l:p1 != a:v
-		" not a fibonacci number
-		return a:v
+	let l:coffset     = l:unitsize
+	if l:siprefix != []
+		let l:coffset = l:coffset - len(l:siprefix[0])
 	endif
-
-	while l:n
-		let [l:p0, l:p1]  = vimne#fibo(l:p0, l:p1)
-		let l:n           = l:n - 1
-	endwhile
-
-	return l:p1
-endfunction
-"}}}
-"{{{
-function! vimne#prevfibonacci(v, n)
-	let l:n = a:n? a:n:1
-	let l:p = [1, 1]
-
-	while l:p[-1] < a:v
-		let [l:ignore, l:next]  = vimne#fibo(l:p[-2], l:p[-1])
-		let l:p                 = l:p+[l:next]
-	endwhile
-
-	if l:p[-1] != a:v
-		" not a fibonacci number
-		return a:v
+	if l:newsiprefix != []
+		let l:coffset = l:coffset + len(l:newsiprefix[0])
 	endif
-
-	if l:n >= len(l:p)
-		return 1
-	endif
-	return l:p[-l:n-1]
+	call vimne#movecursor(-l:coffset)
 endfunction
 "}}}
 "}}}
-
 "}}}"""""""""""""""""""""""""""""""""""""""""""""""""""
